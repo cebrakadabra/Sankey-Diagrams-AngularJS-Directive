@@ -41,18 +41,23 @@ d3app.controller('MainController', ['$scope', '$http', '$timeout', 'InputDataSer
                 link.attr("d", path);
             },
             onClick: function onClick(d){
+                // binded to node
                 alert("Link from "+d.source.name +" to " + d.target.name +" was clicked");
             },
             onMouseEnter: function onMouseEnter(d){
+                // binded to path.link
                 console.log("mouseenter");
             },
             onMouseOut: function onMouseOut(d){
+                // binded to path.link
                 console.log("mouseout");
             },
             onMouseOver: function onMouseOver(d){
+                // binded to path.link
                 console.log("mouseover");
             },
             onMouseLeave: function onMouseLeave(d){
+                // binded to path.link
                 console.log("mouseleave");
             }
 
@@ -104,18 +109,23 @@ $timeout(function(){
                 link.attr("d", path);
             },
             onClick: function onClick(d){
+                // binded to node
                 alert("Link from "+d.source.name +" to " + d.target.name +" was clicked");
             },
             onMouseEnter: function onMouseEnter(d){
+                // binded to path.link
                 console.log("mouseenter");
             },
             onMouseOut: function onMouseOut(d){
+                // binded to path.link
                 console.log("mouseout");
             },
             onMouseOver: function onMouseOver(d){
+                // binded to path.link
                 console.log("mouseover");
             },
             onMouseLeave: function onMouseLeave(d){
+                // binded to path.link
                 console.log("mouseleave");
             }
         }
