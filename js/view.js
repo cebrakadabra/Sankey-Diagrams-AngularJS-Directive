@@ -6,7 +6,10 @@ d3app.directive('d3sankeyDirective', function($parse) {
 	    },
       	link: function postLink(scope, element, attrs) {
 
-
+      		var nodes = [];
+      		var links = []; 
+      		nodes = scope.config.nodes;
+      		links = scope.config.links;
 
       		var sankeyidentifier = null;
 	      	if(scope.config.id != "" && scope.config.id != undefined && scope.config.id != null){
@@ -38,7 +41,19 @@ d3app.directive('d3sankeyDirective', function($parse) {
       		// 	groupColors = ["#db003a", "#002d61", "#f08c00", "#0080c4", "#64E572", "#FF9655", "#FFF263", "#6AF9C4"];
       		// }
 
+      		var structure = {
+      			nodes: [],
+      			links: []
+      		};
 
+
+      		for(var i = 0; i < nodes.length; i++){
+      			structure.nodes.push({"name": nodes[i].name});
+      		}
+
+      		for(var y = 0; y < links.length; y++){
+      			structure.links.push({"source": links[y].source, "target": links[y].target, "value": links[y].value});
+      		}
 
 // ********************************* SCOPE.DRAWCHART FUNC **********************************************
 
@@ -67,8 +82,8 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				var path = sankey.link();
 
 
-				// var energy = null;
-				d3.json("json/energy.json", function(energy) {
+				var energy = structure;
+				//d3.json("json/energy.json", function(energy) {
 
 				  sankey
 				      .nodes(energy.nodes)
@@ -120,7 +135,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				    sankey.relayout();
 				    link.attr("d", path);
 				  }
-				});
+				//});
 
 	      	};
 

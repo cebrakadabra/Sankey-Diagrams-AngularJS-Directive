@@ -2,16 +2,13 @@ d3app.factory('InputDataService', ['$filter', '$http',  function($filter, $http)
 
 	
 	var input = {
-		links: null,
+		nodes: null,
 		items: null
 	}
-	// $http.get('json/input_structure.json').success(function(data) {
-
-	// 	input.links = data.links;
-	// 	input.groups = data.groups;
-	// 	input.items = data.items;
-
-	// });
+	$http.get('json/input_structure.json').success(function(data) {
+		input.nodes = data.nodes;
+		input.links = data.links;
+	});
 
 	
 
