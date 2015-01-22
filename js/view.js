@@ -101,6 +101,11 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				    .enter().append("path")
 				      .attr("class", "link")
 				      .attr("d", path)
+				      .on("click", scope.config.events.onClick)
+					  .on("mouseenter", scope.config.events.onMouseEnter)
+			  		  .on("mouseover", scope.config.events.onMouseOver)
+			          .on("mouseout", scope.config.events.onMouseOut)
+			          .on("mouseleave", scope.config.events.onMouseLeave)
 				      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 				      .sort(function(a, b) { return b.dy - a.dy; });
 
@@ -116,6 +121,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				      .origin(function(d) { return d; })
 				      .on("dragstart", function() { this.parentNode.appendChild(this); })
 				      .on("drag", scope.config.events.dragMove));
+				     
 
 				  node.append("rect")
 				      .attr("height", function(d) { return d.dy; })
@@ -249,6 +255,11 @@ d3app.directive('d3sankeyDirective', function($parse) {
 			var link = svg.selectAll("path.link")
 		      .data(energy.links)
 		      .attr("d", path)
+		      .on("click", newconf.events.onClick)
+			  .on("mouseenter", newconf.events.onMouseEnter)
+			  .on("mouseover", newconf.events.onMouseOver)
+			  .on("mouseout", newconf.events.onMouseOut)
+			  .on("mouseleave", newconf.events.onMouseLeave)
 		      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 		      .sort(function(a, b) { return b.dy - a.dy; });
 

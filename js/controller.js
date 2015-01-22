@@ -39,7 +39,25 @@ d3app.controller('MainController', ['$scope', '$http', '$timeout', 'InputDataSer
                 d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
                 sankey.relayout();
                 link.attr("d", path);
-              }
+            },
+            onClick: function onClick(d){
+                alert("Link from "+d.source.name +" to " + d.target.name +" was clicked");
+            },
+            onMouseEnter: function onMouseEnter(d){
+                console.log("mouseenter");
+            },
+            onMouseOut: function onMouseOut(d){
+                console.log("mouseout");
+            },
+            onMouseOver: function onMouseOver(d){
+                console.log("mouseover");
+            },
+            onMouseLeave: function onMouseLeave(d){
+                console.log("mouseleave");
+            }
+
+
+
         }
         
 	}
@@ -47,8 +65,9 @@ d3app.controller('MainController', ['$scope', '$http', '$timeout', 'InputDataSer
 	
 	
 
-
+// **********************************************************
 // Testing watches
+// **********************************************************
 $timeout(function(){
 	
     $scope.config = {
@@ -83,7 +102,22 @@ $timeout(function(){
                 d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
                 sankey.relayout();
                 link.attr("d", path);
-              }
+            },
+            onClick: function onClick(d){
+                alert("Link from "+d.source.name +" to " + d.target.name +" was clicked");
+            },
+            onMouseEnter: function onMouseEnter(d){
+                console.log("mouseenter");
+            },
+            onMouseOut: function onMouseOut(d){
+                console.log("mouseout");
+            },
+            onMouseOver: function onMouseOver(d){
+                console.log("mouseover");
+            },
+            onMouseLeave: function onMouseLeave(d){
+                console.log("mouseleave");
+            }
         }
     }
 
