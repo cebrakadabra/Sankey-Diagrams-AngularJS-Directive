@@ -4,7 +4,7 @@ body {
 
 .node rect {
   cursor: move;
-  fill-opacity: .9;
+  fill-opacity: 0.9;
   shape-rendering: crispEdges;
 }
 

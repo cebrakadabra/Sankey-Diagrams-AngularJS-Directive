@@ -22,24 +22,24 @@ d3app.directive('d3sankeyDirective', function($parse) {
 	      	element.append("<div id="+sankeyidentifier+"></div>");
 
 
-	      	// var groupColors = null;
+	      	var groupColors = null;
 
-      		// if(scope.config.groupColors != "" && scope.config.groupColors != undefined && scope.config.groupColors != null){
-      		// 	var colorgroup = scope.config.groupColors;
+      		if(scope.config.groupColors != "" && scope.config.groupColors != undefined && scope.config.groupColors != null){
+      			var colorgroup = scope.config.groupColors;
       			
-      		// 	for(var y = 0; y < colorgroup.length; y++){
-      		// 		var isOk  = /^#[0-9A-F]{6}$/i.test(colorgroup[y]);
-      		// 		if(isOk){
-      		// 			groupColors = colorgroup;
-      		// 		} else{
-      		// 			alert("ATTENTION\n\nA given color seems not to be in hexcode. \n\nConvention: 6digits and hexcode only. \nDefault color is used now.")
-      		// 			groupColors = ["#db003a", "#002d61", "#f08c00", "#0080c4", "#64E572", "#FF9655", "#FFF263", "#6AF9C4"];
-      		// 		}
-      		// 	}
+      			for(var y = 0; y < colorgroup.length; y++){
+      				var isOk  = /^#[0-9A-F]{6}$/i.test(colorgroup[y]);
+      				if(isOk){
+      					groupColors = colorgroup;
+      				} else{
+      					alert("ATTENTION\n\nA given color seems not to be in hexcode. \n\nConvention: 6digits and hexcode only. \nDefault color is used now.")
+      					groupColors = ["#db003a", "#002d61", "#f08c00", "#0080c4", "#64E572", "#FF9655", "#FFF263", "#6AF9C4"];
+      				}
+      			}
       			
-      		// } else{
-      		// 	groupColors = ["#db003a", "#002d61", "#f08c00", "#0080c4", "#64E572", "#FF9655", "#FFF263", "#6AF9C4"];
-      		// }
+      		} else{
+      			groupColors = ["#db003a", "#002d61", "#f08c00", "#0080c4", "#64E572", "#FF9655", "#FFF263", "#6AF9C4"];
+      		}
 
       		var structure = {
       			nodes: [],
@@ -66,7 +66,12 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 				var formatNumber = d3.format(",.0f"),
 				    format = function(d) { return formatNumber(d) + " TWh"; },
-				    color = d3.scale.category20();
+				    //color = d3.scale.category20();
+				    color = d3.scale.ordinal()
+          					.range(groupColors)
+          					.domain(d3.range(0,8));
+
+
 
 				var svg = d3.select("#"+sankeyidentifier+"").append("svg")
 				    .attr("width", width + margin.left + margin.right)
@@ -114,7 +119,8 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				  node.append("rect")
 				      .attr("height", function(d) { return d.dy; })
 				      .attr("width", sankey.nodeWidth())
-				      .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
+				      .style("fill", function(d) { console.log(color(d.name.replace(/ .*/, ""))); return d.color = color(d.name.replace(/ .*/, "")); 
+				      })
 				      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
 				    .append("title")
 				      .text(function(d) { return d.name + "\n" + format(d.value); });
