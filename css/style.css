@@ -6,17 +6,46 @@ body {
   cursor: move;
   fill-opacity: 0.9;
   shape-rendering: crispEdges;
+
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+}
+
+g{
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+}
+
+path{
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+}
+
+rect{
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+}
+
+.node{
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
 }
 
 .node text {
   pointer-events: none;
   text-shadow: 0 1px 0 #fff;
+
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
 }
 
 .link {
   fill: none;
   stroke: #000;
   stroke-opacity: .2;
+
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
 }
 
 .link:hover {
@@ -201,6 +230,8 @@ body > pre {
 
 svg {
   font: 10px sans-serif;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
 }
 
 .axis path, .axis line {
