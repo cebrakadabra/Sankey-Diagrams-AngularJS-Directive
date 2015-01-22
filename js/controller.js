@@ -16,7 +16,7 @@ d3app.controller('MainController', ['$scope', '$http', '$timeout', 'InputDataSer
 		width: 1280,
 		height: 800,
         events: {
-            dragmove: function dragmove(d) {
+            dragMove: function dragMove(d) {
                 var margin = {top: 1, right: 1, bottom: 6, left: 1},
                     width = $scope.config.width - margin.left - margin.right,
                     height = $scope.config.height - margin.top - margin.bottom;
@@ -60,7 +60,7 @@ $timeout(function(){
         width: 1280,
         height: 800,
          events: {
-            dragmove: function dragmove(d) {
+            dragMove: function dragMove(d) {
                 var margin = {top: 1, right: 1, bottom: 6, left: 1},
                     width = $scope.config.width - margin.left - margin.right,
                     height = $scope.config.height - margin.top - margin.bottom;

@@ -115,7 +115,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				    .call(d3.behavior.drag()
 				      .origin(function(d) { return d; })
 				      .on("dragstart", function() { this.parentNode.appendChild(this); })
-				      .on("drag", scope.config.events.dragmove));
+				      .on("drag", scope.config.events.dragMove));
 
 				  node.append("rect")
 				      .attr("height", function(d) { return d.dy; })
@@ -262,7 +262,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 		  			  .call(d3.behavior.drag()
 				      .origin(function(d) { return d; })
 				      .on("dragstart", function() { this.parentNode.appendChild(this); })
-				      .on("drag", newconf.events.dragmove))
+				      .on("drag", newconf.events.dragMove))
 		  			  .transition()
 				      .ease("ease")
 				      .duration(250)
