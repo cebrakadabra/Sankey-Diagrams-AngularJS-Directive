@@ -14,7 +14,34 @@ d3app.controller('MainController', ['$scope', '$http', '$timeout', 'InputDataSer
 		groupColors: $scope.groupColors,
 		autosize: false,
 		width: 1280,
-		height: 800
+		height: 800,
+        events: {
+            dragmove: function dragmove(d) {
+                var margin = {top: 1, right: 1, bottom: 6, left: 1},
+                    width = $scope.config.width - margin.left - margin.right,
+                    height = $scope.config.height - margin.top - margin.bottom;
+
+                var sankey = d3.sankey(width)
+                        .nodeWidth(15)
+                        .nodePadding(10)
+                        .size([width, height]);   
+
+                var path = sankey.link(); 
+                var sankeyidentifier = null;
+                if($scope.id != null || $scope.id == ""){
+                    sankeyidentifier = $scope.id;
+                } else{
+                    sankeyidentifier = "sankeyid";
+                }
+                var svg = d3.select("#"+sankeyidentifier+" svg");
+                var link = svg.selectAll("path.link");        
+
+                d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
+                sankey.relayout();
+                link.attr("d", path);
+              }
+        }
+        
 	}
 
 	
@@ -31,13 +58,39 @@ $timeout(function(){
         groupColors: $scope.groupColors,
         autosize: false,
         width: 1280,
-        height: 800
+        height: 800,
+         events: {
+            dragmove: function dragmove(d) {
+                var margin = {top: 1, right: 1, bottom: 6, left: 1},
+                    width = $scope.config.width - margin.left - margin.right,
+                    height = $scope.config.height - margin.top - margin.bottom;
+
+                var sankey = d3.sankey(width)
+                        .nodeWidth(15)
+                        .nodePadding(10)
+                        .size([width, height]);   
+
+                var path = sankey.link(); 
+                var sankeyidentifier = null;
+                if($scope.id != null || $scope.id == ""){
+                    sankeyidentifier = $scope.id;
+                } else{
+                    sankeyidentifier = "sankeyid";
+                }
+                var svg = d3.select("#"+sankeyidentifier+" svg");
+                var link = svg.selectAll("path.link");        
+
+                d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
+                sankey.relayout();
+                link.attr("d", path);
+              }
+        }
     }
 
 	$scope.updatelinks = [
         {
             "source": 0,
-            "target": 1,
+            "target": 2,
             "value": 1204.729
         },
         {
@@ -373,6 +426,11 @@ $timeout(function(){
         {
             "source": 47,
             "target": 15,
+            "value": 289.366
+        },
+        {
+            "source": 47,
+            "target": 1,
             "value": 289.366
         }
     ];

@@ -115,7 +115,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				    .call(d3.behavior.drag()
 				      .origin(function(d) { return d; })
 				      .on("dragstart", function() { this.parentNode.appendChild(this); })
-				      .on("drag", dragmove));
+				      .on("drag", scope.config.events.dragmove));
 
 				  node.append("rect")
 				      .attr("height", function(d) { return d.dy; })
@@ -137,11 +137,6 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				      .attr("x", 6 + sankey.nodeWidth())
 				      .attr("text-anchor", "start");
 
-				  function dragmove(d) {
-				    d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
-				    sankey.relayout();
-				    link.attr("d", path);
-				  }
 				//});
 
 	      	};
@@ -267,7 +262,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 		  			  .call(d3.behavior.drag()
 				      .origin(function(d) { return d; })
 				      .on("dragstart", function() { this.parentNode.appendChild(this); })
-				      .on("drag", dragmove))
+				      .on("drag", newconf.events.dragmove))
 		  			  .transition()
 				      .ease("ease")
 				      .duration(250)
@@ -294,11 +289,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 		      .attr("x", 6 + sankey.nodeWidth())
 		      .attr("text-anchor", "start");
 
-		  function dragmove(d) {
-		    d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
-		    sankey.relayout();
-		    link.attr("d", path);
-		  }
+		  
 
 
 	  
