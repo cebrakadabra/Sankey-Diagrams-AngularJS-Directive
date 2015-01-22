@@ -1,4 +1,4 @@
-d3.sankey = function() {
+d3.sankey = function(width) {
   var sankey = {},
       nodeWidth = 24,
       nodePadding = 8,
@@ -127,7 +127,7 @@ d3.sankey = function() {
 
     //
     moveSinksRight(x);
-    scaleNodeBreadths((958 - nodeWidth) / (x - 1));
+    scaleNodeBreadths((width - nodeWidth) / (x - 1));
   }
 
   function moveSourcesRight() {
