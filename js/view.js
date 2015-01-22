@@ -1,10 +1,10 @@
-d3app.directive('d3sankeyDirective', function($parse) {
+d3app.directive('d3sankeyDirective', function() {
     return {
       restrict: 'E',
       scope: {
 	      config: '='
 	    },
-      	link: function postLink(scope, element, attrs) {
+      	link: function postLink(scope, element, attrs, $watch, $timeout) {
 
       		var nodes = [];
       		var links = []; 
@@ -47,13 +47,6 @@ d3app.directive('d3sankeyDirective', function($parse) {
       		};
 
 
-      		for(var i = 0; i < nodes.length; i++){
-      			structure.nodes.push({"name": nodes[i].name});
-      		}
-
-      		for(var y = 0; y < links.length; y++){
-      			structure.links.push({"source": links[y].source, "target": links[y].target, "value": links[y].value});
-      		}
 
 // ********************************* SCOPE.DRAWCHART FUNC **********************************************
 
@@ -119,7 +112,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				  node.append("rect")
 				      .attr("height", function(d) { return d.dy; })
 				      .attr("width", sankey.nodeWidth())
-				      .style("fill", function(d) { console.log(color(d.name.replace(/ .*/, ""))); return d.color = color(d.name.replace(/ .*/, "")); 
+				      .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); 
 				      })
 				      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
 				    .append("title")
@@ -150,7 +143,10 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 
 // ********************************* DEFINED SIZE OR AUTOSIZING CONFIG **********************************
+	
 
+
+	scope.init = function(wval, hval){
 			var w = null,
 			    h = null;
 
@@ -208,20 +204,58 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 			} else{
 				// w and h in config set
-				w = scope.config.width;
-				h = scope.config.height;
+				w = wval;
+				h = hval;
+
 				scope.drawChart(w, h);
+				// var margin = {top: 1, right: 1, bottom: 6, left: 1};
+				// var svg = d3.select("#"+sankeyidentifier+">svg")
+				//     .attr("width", 100 + margin.left + margin.right)
+				//     .attr("height", 100 + margin.top + margin.bottom)
+				//   .append("g")
+				//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 				
 			}
-			
-			
 
+		};
 			
 
 
 // ********************************* DEFINED SIZE OR AUTOSIZING CONFIG END **********************************
 			
+// ********************************* WATCHES **********************************
+	
+	scope.$watch('config', function(newconf, oldconf) {
 
+	  	console.log(oldconf);
+	  	console.log(newconf);
+	  	$("#"+sankeyidentifier+" > svg").fadeOut();
+	  	$("#"+sankeyidentifier+" > svg").remove();
+	 	
+
+		
+		structure.nodes = [];
+		structure.links = [];
+	  	nodes = [];
+	  	links = [];
+
+	  	nodes = newconf.nodes;
+	  	links = newconf.links;
+
+	  	for(var i = 0; i < nodes.length; i++){
+  			structure.nodes.push({"name": nodes[i].name});
+  		}
+
+  		for(var y = 0; y < links.length; y++){
+  			structure.links.push({"source": links[y].source, "target": links[y].target, "value": links[y].value});
+  		}
+
+	  	scope.init(newconf.width, newconf.height);
+	  
+	});
+
+
+// ********************************* WATCHES END **********************************
 
 
 			
