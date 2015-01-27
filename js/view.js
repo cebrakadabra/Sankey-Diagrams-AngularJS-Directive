@@ -12,6 +12,17 @@ d3app.directive('d3sankeyDirective', function($parse) {
       		links = scope.config.links;
 
       		var sankeyidentifier = null;
+
+      		var structure = {
+      			nodes: [],
+      			links: []
+      		};
+
+      		var groupColors = null;
+
+
+
+
 	      	if(scope.config.id != "" && scope.config.id != undefined && scope.config.id != null){
 	      		sankeyidentifier = scope.id;
 	      		
@@ -22,7 +33,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 	      	element.append("<div id="+sankeyidentifier+"></div>");
 
 
-	      	var groupColors = null;
+	      	
 
       		if(scope.config.groupColors != "" && scope.config.groupColors != undefined && scope.config.groupColors != null){
       			var colorgroup = scope.config.groupColors;
@@ -32,7 +43,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
       				if(isOk){
       					groupColors = colorgroup;
       				} else{
-      					alert("ATTENTION\n\nA given color seems not to be in hexcode. \n\nConvention: 6digits and hexcode only. \nDefault color is used now.")
+      					alert("ATTENTION\n\nA given color seems not to be in hexcode. \n\nConvention: 6digits and hexcode only. \nDefault color is used now.");
       					groupColors = ["#db003a", "#002d61", "#f08c00", "#0080c4", "#64E572", "#FF9655", "#FFF263", "#6AF9C4"];
       				}
       			}
@@ -41,10 +52,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
       			groupColors = ["#db003a", "#002d61", "#f08c00", "#0080c4", "#64E572", "#FF9655", "#FFF263", "#6AF9C4"];
       		}
 
-      		var structure = {
-      			nodes: [],
-      			links: []
-      		};
+
 
       		for(var i = 0; i < nodes.length; i++){
 	  			structure.nodes.push({"name": nodes[i].name});
@@ -53,6 +61,8 @@ d3app.directive('d3sankeyDirective', function($parse) {
 	  		for(var y = 0; y < links.length; y++){
 	  			structure.links.push({"source": links[y].source, "target": links[y].target, "value": links[y].value});
 	  		}
+
+
 
 
 
