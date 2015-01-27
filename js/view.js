@@ -65,10 +65,9 @@ d3app.directive('d3sankeyDirective', function($parse) {
 			    height = h - margin.top - margin.bottom;
 
 
-				var formatNumber = d3.format(",.0f"),
-				    format = function(d) { return formatNumber(d) + " TWh"; },
-				    //color = d3.scale.category20();
-				    color = d3.scale.ordinal()
+				var formatNumber = d3.format(",.0f");
+				var format = function(d) { return formatNumber(d) + " TWh"; };
+				var	color = d3.scale.ordinal()
           					.range(groupColors)
           					.domain(d3.range(0,8));
 
@@ -153,11 +152,96 @@ d3app.directive('d3sankeyDirective', function($parse) {
 // ********************************* SCOPE.DRAWCHART END **********************************************
 
 
+// ********************************** SCOPE.REDRAWCHART ***********************************************
+
+
+		scope.redrawChart = function(newconf){
+
+			var inputdata = newconf;
+
+			var margin = {top: 1, right: 1, bottom: 6, left: 1},
+				width = newconf.width - margin.left - margin.right,
+				height = newconf.height - margin.top - margin.bottom;
+
+		  	var formatNumber = d3.format(",.0f");
+			var format = function(d) { return formatNumber(d) + " TWh"; };
+			var color = d3.scale.ordinal()
+      					.range(groupColors)
+      					.domain(d3.range(0,8));
+
+
+		  	var svg = d3.select("#"+sankeyidentifier+" svg");
+
+			var sankey = d3.sankey(width)
+					    .nodeWidth(15)
+					    .nodePadding(10)
+					    .size([width, height]);
+
+			var path = sankey.link();
+
+
+			  sankey
+			      .nodes(inputdata.nodes)
+			      .links(inputdata.links)
+			      .layout(32);
+
+				var link = svg.selectAll("path.link")
+			      .data(inputdata.links)
+			      .attr("d", path)
+			      .on("click", newconf.events.onClick)
+				  .on("mouseenter", newconf.events.onMouseEnter)
+				  .on("mouseover", newconf.events.onMouseOver)
+				  .on("mouseout", newconf.events.onMouseOut)
+				  .on("mouseleave", newconf.events.onMouseLeave)
+			      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+			      .sort(function(a, b) { return b.dy - a.dy; });
+
+			  link.select("title")
+			      .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
+
+			  
+
+			  var node = svg.selectAll("g.node")
+			  			  .data(inputdata.nodes)
+			  			  .call(d3.behavior.drag()
+					      .origin(function(d) { return d; })
+					      .on("dragstart", function() { this.parentNode.appendChild(this); })
+					      .on("drag", newconf.events.dragMove))
+			  			  .transition()
+					      .ease("ease")
+					      .duration(250)
+					      .attr("class", "node")
+						  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+			  node.select("rect")
+			      .attr("height", function(d) { return d.dy; })
+			      .attr("width", sankey.nodeWidth())
+			      .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); 
+			      })
+			      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+			    .select("title")
+			      .text(function(d) { return d.name + "\n" + format(d.value); });
+
+			  node.select("text")
+			      .attr("x", -6)
+			      .attr("y", function(d) { return d.dy / 2; })
+			      .attr("dy", ".35em")
+			      .attr("text-anchor", "end")
+			      .attr("transform", null)
+			      .text(function(d) { return d.name; })
+			    .filter(function(d) { return d.x < width / 2; })
+			      .attr("x", 6 + sankey.nodeWidth())
+			      .attr("text-anchor", "start");
+
+		};
+
+
+
+// ********************************** SCOPE.REDRAWCHART END ***********************************************
+
+
 // ********************************* DEFINED SIZE OR AUTOSIZING CONFIG **********************************
 	
-
-
-	//scope.init = function(wval, hval){
 			var w = null,
 			    h = null;
 
@@ -215,9 +299,6 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				
 			}
 
-//		};
-			
-
 
 // ********************************* DEFINED SIZE OR AUTOSIZING CONFIG END **********************************
 			
@@ -225,98 +306,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 	
 	scope.$watch('config', function(newconf, oldconf) {
 
-	  	var margin = {top: 1, right: 1, bottom: 6, left: 1},
-			    width = newconf.width - margin.left - margin.right,
-			    height = newconf.height - margin.top - margin.bottom;
-
-	  	var formatNumber = d3.format(",.0f"),
-				    format = function(d) { return formatNumber(d) + " TWh"; },
-				    //color = d3.scale.category20();
-				    color = d3.scale.ordinal()
-          					.range(groupColors)
-          					.domain(d3.range(0,8));
-
-	  	var svg = d3.select("#"+sankeyidentifier+" svg");
-
-		var sankey = d3.sankey(width)
-				    .nodeWidth(15)
-				    .nodePadding(10)
-				    .size([width, height]);
-
-		var path = sankey.link();
-
-
-		var inputdata = newconf;
-
-
-
-
-
-
-
-		  sankey
-		      .nodes(inputdata.nodes)
-		      .links(inputdata.links)
-		      .layout(32);
-
-			var link = svg.selectAll("path.link")
-		      .data(inputdata.links)
-		      .attr("d", path)
-		      .on("click", newconf.events.onClick)
-			  .on("mouseenter", newconf.events.onMouseEnter)
-			  .on("mouseover", newconf.events.onMouseOver)
-			  .on("mouseout", newconf.events.onMouseOut)
-			  .on("mouseleave", newconf.events.onMouseLeave)
-		      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-		      .sort(function(a, b) { return b.dy - a.dy; });
-
-		  link.select("title")
-		      .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
-
-		  
-
-		  var node = svg.selectAll("g.node")
-		  			  .data(inputdata.nodes)
-		  			  .call(d3.behavior.drag()
-				      .origin(function(d) { return d; })
-				      .on("dragstart", function() { this.parentNode.appendChild(this); })
-				      .on("drag", newconf.events.dragMove))
-		  			  .transition()
-				      .ease("ease")
-				      .duration(250)
-				      .attr("class", "node")
-					  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-
-		  node.select("rect")
-		      .attr("height", function(d) { return d.dy; })
-		      .attr("width", sankey.nodeWidth())
-		      .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); 
-		      })
-		      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
-		    .select("title")
-		      .text(function(d) { return d.name + "\n" + format(d.value); });
-
-		  node.select("text")
-		      .attr("x", -6)
-		      .attr("y", function(d) { return d.dy / 2; })
-		      .attr("dy", ".35em")
-		      .attr("text-anchor", "end")
-		      .attr("transform", null)
-		      .text(function(d) { return d.name; })
-		    .filter(function(d) { return d.x < width / 2; })
-		      .attr("x", 6 + sankey.nodeWidth())
-		      .attr("text-anchor", "start");
-
-		  
-
-
-
-
-
-
-
-
-
+		scope.redrawChart(newconf);
 	  
 	});
 
