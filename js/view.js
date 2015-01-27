@@ -4,7 +4,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
       scope: {
 	      config: '='
 	    },
-      	link: function postLink(scope, element, attrs, $watch) {
+      	link: function sankeyDiagram(scope, element, attrs, $watch) {
 
       		var nodes = [];
       		var links = []; 
@@ -346,6 +346,6 @@ d3app.directive('d3sankeyDirective', function($parse) {
 			
 
 
-      } // postLink end
+      } // sankeyDiagram end
     }; // return end
 }); // directive end
