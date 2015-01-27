@@ -67,9 +67,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 				var formatNumber = d3.format(",.0f");
 				var format = function(d) { return formatNumber(d) + " TWh"; };
-				var	color = d3.scale.ordinal()
-          					.range(groupColors)
-          					.domain(d3.range(0,8));
+				var	color = scope.getOrdinalColors();
 
 
 
@@ -79,10 +77,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				  .append("g")
 				    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-				var sankey = d3.sankey(width)
-				    .nodeWidth(15)
-				    .nodePadding(10)
-				    .size([width, height]);
+				var sankey = scope.sankyInit(width, height);
 
 				var path = sankey.link();
 
@@ -151,6 +146,17 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 // ********************************* SCOPE.DRAWCHART END **********************************************
 
+// ********************************* HELPER FUNCTIONS **********************************************
+
+	scope.getOrdinalColors = function(){
+		return d3.scale.ordinal().range(groupColors).domain(d3.range(0,8));
+	};
+
+	scope.sankyInit = function(width, height){
+		return d3.sankey(width).nodeWidth(15).nodePadding(10).size([width, height]);
+	}
+
+// ********************************* HELPER FUNCTIONS END **********************************************
 
 // ********************************** SCOPE.REDRAWCHART ***********************************************
 
@@ -165,17 +171,12 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 		  	var formatNumber = d3.format(",.0f");
 			var format = function(d) { return formatNumber(d) + " TWh"; };
-			var color = d3.scale.ordinal()
-      					.range(groupColors)
-      					.domain(d3.range(0,8));
+			var color = scope.getOrdinalColors();
 
 
 		  	var svg = d3.select("#"+sankeyidentifier+" svg");
 
-			var sankey = d3.sankey(width)
-					    .nodeWidth(15)
-					    .nodePadding(10)
-					    .size([width, height]);
+			var sankey = scope.sankyInit(width, height);
 
 			var path = sankey.link();
 
