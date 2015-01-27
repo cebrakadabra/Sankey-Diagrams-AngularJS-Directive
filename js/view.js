@@ -21,8 +21,8 @@ d3app.directive('d3sankeyDirective', function($parse) {
       		var groupColors = null;
 
 
-
-
+// VALIDATE if id is set
+// ***************************************************************************************************  
 	      	if(scope.config.id != "" && scope.config.id != undefined && scope.config.id != null){
 	      		sankeyidentifier = scope.id;
 	      		
@@ -34,7 +34,8 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 
 	      	
-
+// VALIDATE if colors are set
+// ***************************************************************************************************      		
       		if(scope.config.groupColors != "" && scope.config.groupColors != undefined && scope.config.groupColors != null){
       			var colorgroup = scope.config.groupColors;
       			
@@ -54,6 +55,9 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 
 
+
+// FILL structure with data
+// ***************************************************************************************************
       		for(var i = 0; i < nodes.length; i++){
 	  			structure.nodes.push({"name": nodes[i].name});
 	  		}
@@ -66,6 +70,9 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 
 
+
+
+// drawChart draws the Chart for the first time
 // ********************************* SCOPE.DRAWCHART FUNC **********************************************
 
 	      	scope.drawChart = function(w, h){
@@ -156,6 +163,14 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 // ********************************* SCOPE.DRAWCHART END **********************************************
 
+
+
+
+
+
+
+// getOrdinalColors creates a range of Colors used in the Sankey
+// sankyInit initializes with js/sankey.js
 // ********************************* HELPER FUNCTIONS **********************************************
 
 	scope.getOrdinalColors = function(){
@@ -168,6 +183,14 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 // ********************************* HELPER FUNCTIONS END **********************************************
 
+
+
+
+
+
+
+
+// redrawChart gets called, if the $watch recognizes an updated data
 // ********************************** SCOPE.REDRAWCHART ***********************************************
 
 
@@ -251,6 +274,11 @@ d3app.directive('d3sankeyDirective', function($parse) {
 // ********************************** SCOPE.REDRAWCHART END ***********************************************
 
 
+
+
+
+
+// if width and heigt is given, and autosize is false no autosize will appear
 // ********************************* DEFINED SIZE OR AUTOSIZING CONFIG **********************************
 	
 			var w = null,
@@ -313,14 +341,17 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 // ********************************* DEFINED SIZE OR AUTOSIZING CONFIG END **********************************
 			
+
+
+
+
+
+// observing changes in the config scope			
 // ********************************* WATCHES **********************************
 	
 	scope.$watch('config', function(newconf, oldconf) {
-
 		scope.redrawChart(newconf);
-	  
 	});
-
 
 // ********************************* WATCHES END **********************************
 
