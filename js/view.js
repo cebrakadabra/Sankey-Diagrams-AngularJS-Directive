@@ -88,16 +88,19 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				var path = sankey.link();
 
 
-				var energy = structure;
-				//d3.json("json/energy.json", function(energy) {
+				var inputdata = structure;
+
+
+
+
 
 				  sankey
-				      .nodes(energy.nodes)
-				      .links(energy.links)
+				      .nodes(inputdata.nodes)
+				      .links(inputdata.links)
 				      .layout(32);
 
 				  var link = svg.append("g").selectAll(".link")
-				      .data(energy.links)
+				      .data(inputdata.links)
 				    .enter().append("path")
 				      .attr("class", "link")
 				      .attr("d", path)
@@ -113,7 +116,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				      .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
 
 				  var node = svg.append("g").selectAll(".node")
-				      .data(energy.nodes)
+				      .data(inputdata.nodes)
 				    .enter().append("g")
 				      .attr("class", "node")
 				      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
@@ -143,7 +146,6 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				      .attr("x", 6 + sankey.nodeWidth())
 				      .attr("text-anchor", "start");
 
-				//});
 
 	      	};
 
@@ -244,16 +246,21 @@ d3app.directive('d3sankeyDirective', function($parse) {
 		var path = sankey.link();
 
 
-		var energy = newconf;
-		//d3.json("json/energy.json", function(energy) {
+		var inputdata = newconf;
+
+
+
+
+
+
 
 		  sankey
-		      .nodes(energy.nodes)
-		      .links(energy.links)
+		      .nodes(inputdata.nodes)
+		      .links(inputdata.links)
 		      .layout(32);
 
 			var link = svg.selectAll("path.link")
-		      .data(energy.links)
+		      .data(inputdata.links)
 		      .attr("d", path)
 		      .on("click", newconf.events.onClick)
 			  .on("mouseenter", newconf.events.onMouseEnter)
@@ -269,7 +276,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 		  
 
 		  var node = svg.selectAll("g.node")
-		  			  .data(energy.nodes)
+		  			  .data(inputdata.nodes)
 		  			  .call(d3.behavior.drag()
 				      .origin(function(d) { return d; })
 				      .on("dragstart", function() { this.parentNode.appendChild(this); })
@@ -301,6 +308,13 @@ d3app.directive('d3sankeyDirective', function($parse) {
 		      .attr("text-anchor", "start");
 
 		  
+
+
+
+
+
+
+
 
 
 	  
