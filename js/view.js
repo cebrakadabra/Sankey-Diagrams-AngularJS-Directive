@@ -81,12 +81,9 @@ d3app.directive('d3sankeyDirective', function($parse) {
 			    width = w - margin.left - margin.right,
 			    height = h - margin.top - margin.bottom;
 
-
 				var formatNumber = d3.format(",.0f");
 				var format = function(d) { return formatNumber(d) + " TWh"; };
 				var	color = scope.getOrdinalColors();
-
-
 
 				var svg = d3.select("#"+sankeyidentifier+"").append("svg")
 				    .attr("width", width + margin.left + margin.right)
@@ -98,12 +95,7 @@ d3app.directive('d3sankeyDirective', function($parse) {
 
 				var path = sankey.link();
 
-
 				var inputdata = structure;
-
-
-
-
 
 				  sankey
 				      .nodes(inputdata.nodes)
@@ -157,7 +149,6 @@ d3app.directive('d3sankeyDirective', function($parse) {
 				      .attr("x", 6 + sankey.nodeWidth())
 				      .attr("text-anchor", "start");
 
-
 	      	};
 
 
@@ -206,34 +197,30 @@ d3app.directive('d3sankeyDirective', function($parse) {
 			var format = function(d) { return formatNumber(d) + " TWh"; };
 			var color = scope.getOrdinalColors();
 
-
 		  	var svg = d3.select("#"+sankeyidentifier+" svg");
 
 			var sankey = scope.sankyInit(width, height);
 
 			var path = sankey.link();
 
+			sankey
+			  .nodes(inputdata.nodes)
+			  .links(inputdata.links)
+			  .layout(32);
 
-			  sankey
-			      .nodes(inputdata.nodes)
-			      .links(inputdata.links)
-			      .layout(32);
+			var link = svg.selectAll("path.link")
+			  .data(inputdata.links)
+			  .attr("d", path)
+			  .on("click", newconf.events.onClick)
+			  .on("mouseenter", newconf.events.onMouseEnter)
+			  .on("mouseover", newconf.events.onMouseOver)
+			  .on("mouseout", newconf.events.onMouseOut)
+			  .on("mouseleave", newconf.events.onMouseLeave)
+			  .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+			  .sort(function(a, b) { return b.dy - a.dy; });
 
-				var link = svg.selectAll("path.link")
-			      .data(inputdata.links)
-			      .attr("d", path)
-			      .on("click", newconf.events.onClick)
-				  .on("mouseenter", newconf.events.onMouseEnter)
-				  .on("mouseover", newconf.events.onMouseOver)
-				  .on("mouseout", newconf.events.onMouseOut)
-				  .on("mouseleave", newconf.events.onMouseLeave)
-			      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-			      .sort(function(a, b) { return b.dy - a.dy; });
-
-			  link.select("title")
-			      .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
-
-			  
+			link.select("title")
+			  .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
 
 			  var node = svg.selectAll("g.node")
 			  			  .data(inputdata.nodes)
